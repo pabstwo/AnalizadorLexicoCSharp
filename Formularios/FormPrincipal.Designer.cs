@@ -68,10 +68,10 @@
             colTipoDato = new DataGridViewTextBoxColumn();
             colApariciones = new DataGridViewTextBoxColumn();
             pnlEstado = new Panel();
-            lblTotalTokens = new Label();
-            lblTotalErrores = new Label();
-            lblTotalLineas = new Label();
             lblEstado = new Label();
+            lblTotalLineas = new Label();
+            lblTotalErrores = new Label();
+            lblTotalTokens = new Label();
             tabResultados.SuspendLayout();
             tabTokens.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvTokens).BeginInit();
@@ -410,7 +410,7 @@
             dataGridViewCellStyle8.SelectionForeColor = Color.Black;
             dataGridViewCellStyle8.WrapMode = DataGridViewTriState.True;
             dgvSimbolos.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle8;
-            dgvSimbolos.ColumnHeadersHeight = 38;
+            dgvSimbolos.ColumnHeadersHeight = 45;
             dgvSimbolos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dgvSimbolos.Columns.AddRange(new DataGridViewColumn[] { colSimboloNombre, colPrimeraLinea, colPrimeraColumna, colTipoDato, colApariciones });
             dataGridViewCellStyle9.Alignment = DataGridViewContentAlignment.MiddleLeft;
@@ -484,27 +484,16 @@
             pnlEstado.Size = new Size(1185, 45);
             pnlEstado.TabIndex = 20;
             // 
-            // lblTotalTokens
+            // lblEstado
             // 
-            lblTotalTokens.AutoSize = true;
-            lblTotalTokens.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
-            lblTotalTokens.ForeColor = Color.Black;
-            lblTotalTokens.Location = new Point(15, 12);
-            lblTotalTokens.Name = "lblTotalTokens";
-            lblTotalTokens.Size = new Size(73, 20);
-            lblTotalTokens.TabIndex = 0;
-            lblTotalTokens.Text = "Tokens: 0";
-            // 
-            // lblTotalErrores
-            // 
-            lblTotalErrores.AutoSize = true;
-            lblTotalErrores.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
-            lblTotalErrores.ForeColor = Color.Black;
-            lblTotalErrores.Location = new Point(130, 12);
-            lblTotalErrores.Name = "lblTotalErrores";
-            lblTotalErrores.Size = new Size(74, 20);
-            lblTotalErrores.TabIndex = 1;
-            lblTotalErrores.Text = "Errores: 0";
+            lblEstado.AutoSize = true;
+            lblEstado.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
+            lblEstado.ForeColor = Color.Black;
+            lblEstado.Location = new Point(500, 12);
+            lblEstado.Name = "lblEstado";
+            lblEstado.Size = new Size(89, 20);
+            lblEstado.TabIndex = 3;
+            lblEstado.Text = "Estado: listo";
             // 
             // lblTotalLineas
             // 
@@ -517,16 +506,27 @@
             lblTotalLineas.TabIndex = 2;
             lblTotalLineas.Text = "Líneas: 0";
             // 
-            // lblEstado
+            // lblTotalErrores
             // 
-            lblEstado.AutoSize = true;
-            lblEstado.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
-            lblEstado.ForeColor = Color.Black;
-            lblEstado.Location = new Point(500, 12);
-            lblEstado.Name = "lblEstado";
-            lblEstado.Size = new Size(89, 20);
-            lblEstado.TabIndex = 3;
-            lblEstado.Text = "Estado: listo";
+            lblTotalErrores.AutoSize = true;
+            lblTotalErrores.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
+            lblTotalErrores.ForeColor = Color.Black;
+            lblTotalErrores.Location = new Point(130, 12);
+            lblTotalErrores.Name = "lblTotalErrores";
+            lblTotalErrores.Size = new Size(74, 20);
+            lblTotalErrores.TabIndex = 1;
+            lblTotalErrores.Text = "Errores: 0";
+            // 
+            // lblTotalTokens
+            // 
+            lblTotalTokens.AutoSize = true;
+            lblTotalTokens.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
+            lblTotalTokens.ForeColor = Color.Black;
+            lblTotalTokens.Location = new Point(15, 12);
+            lblTotalTokens.Name = "lblTotalTokens";
+            lblTotalTokens.Size = new Size(73, 20);
+            lblTotalTokens.TabIndex = 0;
+            lblTotalTokens.Text = "Tokens: 0";
             // 
             // FormPrincipal
             // 
