@@ -1,0 +1,21 @@
+﻿class Programa
+{
+    public static void Main()
+    {
+        int contador = 0;
+
+        while (contador < 10)
+        {
+            if (contador >= 5 && contador != 8)
+            {
+                contador++;
+            }
+            else
+            {
+                contador += 2;
+            }
+        }
+
+        return;
+    }
+}
