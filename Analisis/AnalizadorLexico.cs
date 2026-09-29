@@ -88,6 +88,15 @@ namespace AnalizadorLexicoCSharp.Analisis
                 }
             }
 
+            resultado.Tokens.Add(new Token(
+    numeroToken,
+    "EOF",
+    TipoToken.FinArchivo,
+    linea,
+    columna
+));
+
+            numeroToken++;
             resultado.Simbolos = tablaSimbolos.ObtenerSimbolos();
 
             return resultado;
