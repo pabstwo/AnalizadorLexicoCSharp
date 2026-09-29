@@ -53,8 +53,11 @@ namespace AnalizadorLexicoCSharp.Analisis
                 {
                     ReconocerIdentificadorOPalabraReservada();
                 }
-                else
+                else if (char.IsDigit(actual))
                 {
+                 ReconocerNumero();
+                }
+                { 
                     Avanzar();
                 }
             }
@@ -148,6 +151,58 @@ namespace AnalizadorLexicoCSharp.Analisis
                     columnaInicio
                 );
             }
+        }
+        private void ReconocerNumero()
+        {
+            int lineaInicio = linea;
+            int columnaInicio = columna;
+
+            StringBuilder lexema = new StringBuilder();
+            bool esNumeroReal = false;
+
+            while (!FinDelCodigo() && char.IsDigit(CaracterActual()))
+            {
+                lexema.Append(CaracterActual());
+                Avanzar();
+            }
+
+            if (!FinDelCodigo() &&
+                CaracterActual() == '.' &&
+                char.IsDigit(CaracterSiguiente()))
+            {
+                esNumeroReal = true;
+
+                lexema.Append(CaracterActual());
+                Avanzar();
+
+                while (!FinDelCodigo() && char.IsDigit(CaracterActual()))
+                {
+                    lexema.Append(CaracterActual());
+                    Avanzar();
+                }
+            }
+
+            TipoToken tipo;
+
+            if (esNumeroReal)
+            {
+                tipo = TipoToken.NumeroReal;
+            }
+            else
+            {
+                tipo = TipoToken.NumeroEntero;
+            }
+
+            Token token = new Token(
+                numeroToken,
+                lexema.ToString(),
+                tipo,
+                lineaInicio,
+                columnaInicio
+            );
+
+            resultado.Tokens.Add(token);
+            numeroToken++;
         }
         private void Avanzar()
         {
