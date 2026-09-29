@@ -43,6 +43,7 @@ namespace AnalizadorLexicoCSharp.Analisis
 
             while (!FinDelCodigo())
             {
+
                 char actual = CaracterActual();
 
                 if (char.IsWhiteSpace(actual))
@@ -57,6 +58,15 @@ namespace AnalizadorLexicoCSharp.Analisis
                 {
                  ReconocerNumero();
                 }
+                else if (actual == '"')
+                {
+                    ReconocerCadena();
+                }
+                else if (actual == '\'')
+                {
+                    ReconocerCaracter();
+                }
+                else
                 { 
                     Avanzar();
                 }
@@ -203,6 +213,112 @@ namespace AnalizadorLexicoCSharp.Analisis
 
             resultado.Tokens.Add(token);
             numeroToken++;
+        }
+        private void ReconocerCadena()
+        {
+            int lineaInicio = linea;
+            int columnaInicio = columna;
+
+            StringBuilder lexema = new StringBuilder();
+            bool cerrada = false;
+
+            lexema.Append(CaracterActual());
+            Avanzar();
+
+            while (!FinDelCodigo() && CaracterActual() != '\n')
+            {
+                if (CaracterActual() == '\\')
+                {
+                    lexema.Append(CaracterActual());
+                    Avanzar();
+
+                    if (!FinDelCodigo())
+                    {
+                        lexema.Append(CaracterActual());
+                        Avanzar();
+                    }
+                }
+                else if (CaracterActual() == '"')
+                {
+                    lexema.Append(CaracterActual());
+                    Avanzar();
+
+                    cerrada = true;
+                    break;
+                }
+                else
+                {
+                    lexema.Append(CaracterActual());
+                    Avanzar();
+                }
+            }
+
+            if (cerrada)
+            {
+                Token token = new Token(
+                    numeroToken,
+                    lexema.ToString(),
+                    TipoToken.Cadena,
+                    lineaInicio,
+                    columnaInicio
+                );
+
+                resultado.Tokens.Add(token);
+                numeroToken++;
+            }
+        }
+        private void ReconocerCaracter()
+        {
+            int lineaInicio = linea;
+            int columnaInicio = columna;
+
+            StringBuilder lexema = new StringBuilder();
+            bool cerrado = false;
+
+            lexema.Append(CaracterActual());
+            Avanzar();
+
+            while (!FinDelCodigo() && CaracterActual() != '\n')
+            {
+                if (CaracterActual() == '\\')
+                {
+                    lexema.Append(CaracterActual());
+                    Avanzar();
+
+                    if (!FinDelCodigo())
+                    {
+                        lexema.Append(CaracterActual());
+                        Avanzar();
+                    }
+                }
+                else if (CaracterActual() == '\'')
+                {
+                    lexema.Append(CaracterActual());
+                    Avanzar();
+
+                    cerrado = true;
+                    break;
+                }
+                else
+                {
+                    lexema.Append(CaracterActual());
+                    Avanzar();
+                }
+            }
+
+            if (cerrado)
+            {
+                Token token = new Token(
+                    numeroToken,
+                    lexema.ToString(),
+                    TipoToken.Caracter,
+                    lineaInicio,
+                    columnaInicio
+                );
+
+                resultado.Tokens.Add(token);
+                numeroToken++;
+            }
         }
         private void Avanzar()
         {
