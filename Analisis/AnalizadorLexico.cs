@@ -84,7 +84,7 @@ namespace AnalizadorLexicoCSharp.Analisis
                 }
                 else
                 {
-                    Avanzar();
+                    RegistrarCaracterDesconocido();
                 }
             }
 
@@ -411,7 +411,14 @@ namespace AnalizadorLexicoCSharp.Analisis
             }
             else
             {
-             
+                RegistrarError(
+         "E09",
+         lexema,
+         lineaInicio,
+         columnaInicio,
+         "Operador lógico incompleto. Se esperaba && o ||."
+     );
+
                 return;
             }
 
@@ -504,6 +511,39 @@ namespace AnalizadorLexicoCSharp.Analisis
                 resultado.Tokens.Add(token);
                 numeroToken++;
             }
+        }
+        private void RegistrarError(
+    string codigo,
+    string lexema,
+    int lineaError,
+    int columnaError,
+    string descripcion)
+        {
+            ErrorLexico error = new ErrorLexico(
+                codigo,
+                lexema,
+                lineaError,
+                columnaError,
+                descripcion
+            );
+
+            resultado.Errores.Add(error);
+        }
+        private void RegistrarCaracterDesconocido()
+        {
+            int lineaError = linea;
+            int columnaError = columna;
+            string lexema = CaracterActual().ToString();
+
+            RegistrarError(
+                "E01",
+                lexema,
+                lineaError,
+                columnaError,
+                "Carácter no reconocido por el analizador."
+            );
+
+            Avanzar();
         }
         private void Avanzar()
         {
