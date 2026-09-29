@@ -66,6 +66,14 @@ namespace AnalizadorLexicoCSharp.Analisis
                 {
                     ReconocerCaracter();
                 }
+                else if (actual == '/' && CaracterSiguiente() == '/')
+                {
+                    ReconocerComentarioLinea();
+                }
+                else if (actual == '/' && CaracterSiguiente() == '*')
+                {
+                    ReconocerComentarioBloque();
+                }
                 else if ("(){}[];,.".Contains(actual))
                 {
                     ReconocerDelimitador();
@@ -75,7 +83,7 @@ namespace AnalizadorLexicoCSharp.Analisis
                     ReconocerOperador();
                 }
                 else
-                { 
+                {
                     Avanzar();
                 }
             }
@@ -417,6 +425,85 @@ namespace AnalizadorLexicoCSharp.Analisis
 
             resultado.Tokens.Add(token);
             numeroToken++;
+        }
+        private void ReconocerComentarioLinea()
+        {
+            int lineaInicio = linea;
+            int columnaInicio = columna;
+
+            StringBuilder lexema = new StringBuilder();
+
+           
+            lexema.Append(CaracterActual());
+            Avanzar();
+
+            lexema.Append(CaracterActual());
+            Avanzar();
+
+            while (!FinDelCodigo() && CaracterActual() != '\n')
+            {
+                lexema.Append(CaracterActual());
+                Avanzar();
+            }
+
+            Token token = new Token(
+                numeroToken,
+                lexema.ToString(),
+                TipoToken.ComentarioLinea,
+                lineaInicio,
+                columnaInicio
+            );
+
+            resultado.Tokens.Add(token);
+            numeroToken++;
+        }
+        private void ReconocerComentarioBloque()
+        {
+            int lineaInicio = linea;
+            int columnaInicio = columna;
+
+            StringBuilder lexema = new StringBuilder();
+            bool cerrado = false;
+
+          
+            lexema.Append(CaracterActual());
+            Avanzar();
+
+            lexema.Append(CaracterActual());
+            Avanzar();
+
+            while (!FinDelCodigo())
+            {
+                if (CaracterActual() == '*' &&
+                    CaracterSiguiente() == '/')
+                {
+                    lexema.Append(CaracterActual());
+                    Avanzar();
+
+                    lexema.Append(CaracterActual());
+                    Avanzar();
+
+                    cerrado = true;
+                    break;
+                }
+
+                lexema.Append(CaracterActual());
+                Avanzar();
+            }
+
+            if (cerrado)
+            {
+                Token token = new Token(
+                    numeroToken,
+                    lexema.ToString(),
+                    TipoToken.ComentarioBloque,
+                    lineaInicio,
+                    columnaInicio
+                );
+
+                resultado.Tokens.Add(token);
+                numeroToken++;
+            }
         }
         private void Avanzar()
         {
