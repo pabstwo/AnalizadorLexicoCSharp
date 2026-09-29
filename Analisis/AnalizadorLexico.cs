@@ -282,6 +282,16 @@ namespace AnalizadorLexicoCSharp.Analisis
                 resultado.Tokens.Add(token);
                 numeroToken++;
             }
+            else
+            {
+                RegistrarError(
+                    "E05",
+                    lexema.ToString(),
+                    lineaInicio,
+                    columnaInicio,
+                    "Cadena sin comilla de cierre."
+                );
+            }
         }
         private void ReconocerCaracter()
         {
@@ -321,20 +331,49 @@ namespace AnalizadorLexicoCSharp.Analisis
                     Avanzar();
                 }
             }
-
             if (cerrado)
             {
-                Token token = new Token(
-                    numeroToken,
-                    lexema.ToString(),
-                    TipoToken.Caracter,
-                    lineaInicio,
-                    columnaInicio
-                );
+                string texto = lexema.ToString();
 
-                resultado.Tokens.Add(token);
-                numeroToken++;
+                bool contenidoValido =
+                    texto.Length == 3 ||
+                    (texto.Length == 4 && texto[1] == '\\');
+
+                if (contenidoValido)
+                {
+                    Token token = new Token(
+                        numeroToken,
+                        texto,
+                        TipoToken.Caracter,
+                        lineaInicio,
+                        columnaInicio
+                    );
+
+                    resultado.Tokens.Add(token);
+                    numeroToken++;
+                }
+                else
+                {
+                    RegistrarError(
+                        "E06",
+                        texto,
+                        lineaInicio,
+                        columnaInicio,
+                        "El literal de carácter debe contener un solo carácter."
+                    );
+                }
             }
+            else
+            {
+                RegistrarError(
+                    "E06",
+                    lexema.ToString(),
+                    lineaInicio,
+                    columnaInicio,
+                    "Literal de carácter sin comilla de cierre."
+                );
+            }
+
         }
         private void ReconocerDelimitador()
         {
@@ -510,6 +549,16 @@ namespace AnalizadorLexicoCSharp.Analisis
 
                 resultado.Tokens.Add(token);
                 numeroToken++;
+            }
+            else
+            {
+                RegistrarError(
+                    "E07",
+                    lexema.ToString(),
+                    lineaInicio,
+                    columnaInicio,
+                    "Comentario de bloque sin cierre."
+                );
             }
         }
         private void RegistrarError(
