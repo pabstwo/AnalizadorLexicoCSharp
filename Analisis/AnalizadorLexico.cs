@@ -184,33 +184,77 @@ namespace AnalizadorLexicoCSharp.Analisis
             int columnaInicio = columna;
 
             StringBuilder lexema = new StringBuilder();
-            bool esNumeroReal = false;
 
-            while (!FinDelCodigo() && char.IsDigit(CaracterActual()))
+            int cantidadPuntos = 0;
+            bool contieneLetras = false;
+
+            while (!FinDelCodigo() &&
+                   (char.IsLetterOrDigit(CaracterActual()) ||
+                    CaracterActual() == '_' ||
+                    CaracterActual() == '.'))
             {
+                if (CaracterActual() == '.')
+                {
+                    cantidadPuntos++;
+                }
+
+                if (char.IsLetter(CaracterActual()) ||
+                    CaracterActual() == '_')
+                {
+                    contieneLetras = true;
+                }
+
                 lexema.Append(CaracterActual());
                 Avanzar();
             }
 
-            if (!FinDelCodigo() &&
-                CaracterActual() == '.' &&
-                char.IsDigit(CaracterSiguiente()))
+            string texto = lexema.ToString();
+
+           
+            if (contieneLetras)
             {
-                esNumeroReal = true;
+                RegistrarError(
+                    "E02",
+                    texto,
+                    lineaInicio,
+                    columnaInicio,
+                    "Un identificador no puede comenzar con un número."
+                );
 
-                lexema.Append(CaracterActual());
-                Avanzar();
+                return;
+            }
 
-                while (!FinDelCodigo() && char.IsDigit(CaracterActual()))
-                {
-                    lexema.Append(CaracterActual());
-                    Avanzar();
-                }
+           
+            if (cantidadPuntos > 1)
+            {
+                RegistrarError(
+                    "E04",
+                    texto,
+                    lineaInicio,
+                    columnaInicio,
+                    "Número mal formado: contiene más de un punto decimal."
+                );
+
+                return;
+            }
+
+            
+            if (cantidadPuntos == 1 && texto.EndsWith("."))
+            {
+                RegistrarError(
+                    "E03",
+                    texto,
+                    lineaInicio,
+                    columnaInicio,
+                    "Número real incompleto: faltan dígitos después del punto."
+                );
+
+                return;
             }
 
             TipoToken tipo;
 
-            if (esNumeroReal)
+            if (cantidadPuntos == 1)
             {
                 tipo = TipoToken.NumeroReal;
             }
@@ -221,7 +265,7 @@ namespace AnalizadorLexicoCSharp.Analisis
 
             Token token = new Token(
                 numeroToken,
-                lexema.ToString(),
+                texto,
                 tipo,
                 lineaInicio,
                 columnaInicio
