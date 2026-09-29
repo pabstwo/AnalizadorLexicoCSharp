@@ -237,6 +237,8 @@ namespace AnalizadorLexicoCSharp.Analisis
 
             StringBuilder lexema = new StringBuilder();
             bool cerrada = false;
+            bool escapeInvalido = false;
+            string escapeIncorrecto = "";
 
             lexema.Append(CaracterActual());
             Avanzar();
@@ -248,9 +250,17 @@ namespace AnalizadorLexicoCSharp.Analisis
                     lexema.Append(CaracterActual());
                     Avanzar();
 
-                    if (!FinDelCodigo())
+                    if (!FinDelCodigo() && CaracterActual() != '\n')
                     {
-                        lexema.Append(CaracterActual());
+                        char escapado = CaracterActual();
+
+                        if (!EsEscapeValido(escapado) && !escapeInvalido)
+                        {
+                            escapeInvalido = true;
+                            escapeIncorrecto = "\\" + escapado;
+                        }
+
+                        lexema.Append(escapado);
                         Avanzar();
                     }
                 }
@@ -269,7 +279,7 @@ namespace AnalizadorLexicoCSharp.Analisis
                 }
             }
 
-            if (cerrada)
+            if (cerrada && !escapeInvalido)
             {
                 Token token = new Token(
                     numeroToken,
@@ -282,7 +292,7 @@ namespace AnalizadorLexicoCSharp.Analisis
                 resultado.Tokens.Add(token);
                 numeroToken++;
             }
-            else
+            else if (!cerrada)
             {
                 RegistrarError(
                     "E05",
@@ -290,6 +300,16 @@ namespace AnalizadorLexicoCSharp.Analisis
                     lineaInicio,
                     columnaInicio,
                     "Cadena sin comilla de cierre."
+                );
+            }
+            else
+            {
+                RegistrarError(
+                    "E08",
+                    escapeIncorrecto,
+                    lineaInicio,
+                    columnaInicio,
+                    "Secuencia de escape no permitida."
                 );
             }
         }
@@ -300,6 +320,8 @@ namespace AnalizadorLexicoCSharp.Analisis
 
             StringBuilder lexema = new StringBuilder();
             bool cerrado = false;
+            bool escapeInvalido = false;
+            string escapeIncorrecto = "";
 
             lexema.Append(CaracterActual());
             Avanzar();
@@ -311,9 +333,17 @@ namespace AnalizadorLexicoCSharp.Analisis
                     lexema.Append(CaracterActual());
                     Avanzar();
 
-                    if (!FinDelCodigo())
+                    if (!FinDelCodigo() && CaracterActual() != '\n')
                     {
-                        lexema.Append(CaracterActual());
+                        char escapado = CaracterActual();
+
+                        if (!EsEscapeValido(escapado) && !escapeInvalido)
+                        {
+                            escapeInvalido = true;
+                            escapeIncorrecto = "\\" + escapado;
+                        }
+
+                        lexema.Append(escapado);
                         Avanzar();
                     }
                 }
@@ -339,7 +369,17 @@ namespace AnalizadorLexicoCSharp.Analisis
                     texto.Length == 3 ||
                     (texto.Length == 4 && texto[1] == '\\');
 
-                if (contenidoValido)
+                if (escapeInvalido)
+                {
+                    RegistrarError(
+                        "E08",
+                        escapeIncorrecto,
+                        lineaInicio,
+                        columnaInicio,
+                        "Secuencia de escape no permitida."
+                    );
+                }
+                else if (contenidoValido)
                 {
                     Token token = new Token(
                         numeroToken,
@@ -561,6 +601,16 @@ namespace AnalizadorLexicoCSharp.Analisis
                 );
             }
         }
+        private bool EsEscapeValido(char caracter)
+        {
+            return caracter == 'n' ||
+                   caracter == 't' ||
+                   caracter == 'r' ||
+                   caracter == '\\' ||
+                   caracter == '"' ||
+                   caracter == '\'' ||
+                   caracter == '0';
+        }   
         private void RegistrarError(
     string codigo,
     string lexema,
