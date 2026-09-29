@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using AnalizadorLexicoCSharp.Modelos;
+using System.Text;
 
 namespace AnalizadorLexicoCSharp.Analisis
 {
@@ -42,7 +43,20 @@ namespace AnalizadorLexicoCSharp.Analisis
 
             while (!FinDelCodigo())
             {
-                Avanzar();
+                char actual = CaracterActual();
+
+                if (char.IsWhiteSpace(actual))
+                {
+                    Avanzar();
+                }
+                else if (char.IsLetter(actual) || actual == '_')
+                {
+                    ReconocerIdentificadorOPalabraReservada();
+                }
+                else
+                {
+                    Avanzar();
+                }
             }
 
             resultado.Simbolos = tablaSimbolos.ObtenerSimbolos();
@@ -87,7 +101,54 @@ namespace AnalizadorLexicoCSharp.Analisis
 
             return codigoFuente[posicion + 1];
         }
+        private void ReconocerIdentificadorOPalabraReservada()
+        {
+            int lineaInicio = linea;
+            int columnaInicio = columna;
 
+            StringBuilder lexema = new StringBuilder();
+
+            while (!FinDelCodigo() &&
+                   (char.IsLetterOrDigit(CaracterActual()) ||
+                    CaracterActual() == '_'))
+            {
+                lexema.Append(CaracterActual());
+                Avanzar();
+            }
+
+            string texto = lexema.ToString();
+
+            TipoToken tipo;
+
+            if (palabrasReservadas.Contains(texto))
+            {
+                tipo = TipoToken.PalabraReservada;
+            }
+            else
+            {
+                tipo = TipoToken.Identificador;
+            }
+
+            Token token = new Token(
+                numeroToken,
+                texto,
+                tipo,
+                lineaInicio,
+                columnaInicio
+            );
+
+            resultado.Tokens.Add(token);
+            numeroToken++;
+
+            if (tipo == TipoToken.Identificador)
+            {
+                tablaSimbolos.AgregarOActualizar(
+                    texto,
+                    lineaInicio,
+                    columnaInicio
+                );
+            }
+        }
         private void Avanzar()
         {
             if (FinDelCodigo())
