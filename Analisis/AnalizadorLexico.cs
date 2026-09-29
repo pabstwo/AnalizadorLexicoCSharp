@@ -66,6 +66,14 @@ namespace AnalizadorLexicoCSharp.Analisis
                 {
                     ReconocerCaracter();
                 }
+                else if ("(){}[];,.".Contains(actual))
+                {
+                    ReconocerDelimitador();
+                }
+                else if ("+-*/%<>=!&|".Contains(actual))
+                {
+                    ReconocerOperador();
+                }
                 else
                 { 
                     Avanzar();
@@ -319,6 +327,96 @@ namespace AnalizadorLexicoCSharp.Analisis
                 resultado.Tokens.Add(token);
                 numeroToken++;
             }
+        }
+        private void ReconocerDelimitador()
+        {
+            int lineaInicio = linea;
+            int columnaInicio = columna;
+
+            string lexema = CaracterActual().ToString();
+            Avanzar();
+
+            Token token = new Token(
+                numeroToken,
+                lexema,
+                TipoToken.Delimitador,
+                lineaInicio,
+                columnaInicio
+            );
+
+            resultado.Tokens.Add(token);
+            numeroToken++;
+        }
+        private void ReconocerOperador()
+        {
+            int lineaInicio = linea;
+            int columnaInicio = columna;
+
+            string lexema = CaracterActual().ToString();
+            Avanzar();
+
+            if (!FinDelCodigo())
+            {
+                string posibleOperador =
+                    lexema + CaracterActual();
+
+                string[] operadoresDobles =
+                {
+            "++", "--",
+            "+=", "-=", "*=", "/=", "%=",
+            "==", "!=", "<=", ">=",
+            "&&", "||"
+        };
+
+                if (operadoresDobles.Contains(posibleOperador))
+                {
+                    lexema = posibleOperador;
+                    Avanzar();
+                }
+            }
+
+            TipoToken tipo;
+
+            if (lexema == "+" || lexema == "-" ||
+                lexema == "*" || lexema == "/" ||
+                lexema == "%" || lexema == "++" ||
+                lexema == "--")
+            {
+                tipo = TipoToken.OperadorAritmetico;
+            }
+            else if (lexema == "==" || lexema == "!=" ||
+                     lexema == "<" || lexema == ">" ||
+                     lexema == "<=" || lexema == ">=")
+            {
+                tipo = TipoToken.OperadorRelacional;
+            }
+            else if (lexema == "&&" || lexema == "||" ||
+                     lexema == "!")
+            {
+                tipo = TipoToken.OperadorLogico;
+            }
+            else if (lexema == "=" || lexema == "+=" ||
+                     lexema == "-=" || lexema == "*=" ||
+                     lexema == "/=" || lexema == "%=")
+            {
+                tipo = TipoToken.OperadorAsignacion;
+            }
+            else
+            {
+             
+                return;
+            }
+
+            Token token = new Token(
+                numeroToken,
+                lexema,
+                tipo,
+                lineaInicio,
+                columnaInicio
+            );
+
+            resultado.Tokens.Add(token);
+            numeroToken++;
         }
         private void Avanzar()
         {
