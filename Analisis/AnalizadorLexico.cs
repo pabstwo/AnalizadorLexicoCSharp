@@ -13,6 +13,7 @@ namespace AnalizadorLexicoCSharp.Analisis
         private int linea;
         private int columna;
         private int numeroToken;
+        private string tipoDatoPendiente = "No determinado";
 
         private ResultadoAnalisis resultado;
 
@@ -29,7 +30,7 @@ namespace AnalizadorLexicoCSharp.Analisis
                 "public", "private", "protected",
                 "new", "using", "namespace"
             };
-
+       
         public AnalizadorLexico()
         {
             tablaSimbolos = new TablaSimbolos();
@@ -104,12 +105,14 @@ namespace AnalizadorLexicoCSharp.Analisis
 
         private void PrepararAnalisis(string codigo)
         {
+
             codigoFuente = codigo ?? string.Empty;
 
             posicion = 0;
             linea = 1;
             columna = 1;
             numeroToken = 1;
+            tipoDatoPendiente = "No determinado";
 
             resultado = new ResultadoAnalisis();
             tablaSimbolos.Limpiar();
@@ -139,6 +142,15 @@ namespace AnalizadorLexicoCSharp.Analisis
 
             return codigoFuente[posicion + 1];
         }
+        private bool EsTipoDato(string texto)
+        {
+            return texto == "int" ||
+                   texto == "float" ||
+                   texto == "double" ||
+                   texto == "char" ||
+                   texto == "bool" ||
+                   texto == "string";
+        }
         private void ReconocerIdentificadorOPalabraReservada()
         {
             int lineaInicio = linea;
@@ -155,7 +167,6 @@ namespace AnalizadorLexicoCSharp.Analisis
             }
 
             string texto = lexema.ToString();
-
             TipoToken tipo;
 
             if (palabrasReservadas.Contains(texto))
@@ -165,6 +176,13 @@ namespace AnalizadorLexicoCSharp.Analisis
             else
             {
                 tipo = TipoToken.Identificador;
+            }
+
+          
+            if (tipo == TipoToken.PalabraReservada &&
+                EsTipoDato(texto))
+            {
+                tipoDatoPendiente = texto;
             }
 
             Token token = new Token(
@@ -178,13 +196,17 @@ namespace AnalizadorLexicoCSharp.Analisis
             resultado.Tokens.Add(token);
             numeroToken++;
 
+            
             if (tipo == TipoToken.Identificador)
             {
                 tablaSimbolos.AgregarOActualizar(
                     texto,
                     lineaInicio,
-                    columnaInicio
+                    columnaInicio,
+                    tipoDatoPendiente
                 );
+
+                tipoDatoPendiente = "No determinado";
             }
         }
         private void ReconocerNumero()
