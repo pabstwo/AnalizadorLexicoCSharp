@@ -72,6 +72,7 @@
             lblTotalLineas = new Label();
             lblTotalErrores = new Label();
             lblTotalTokens = new Label();
+            rtbNumerosLinea = new RichTextBox();
             tabResultados.SuspendLayout();
             tabTokens.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvTokens).BeginInit();
@@ -177,9 +178,9 @@
             rtbCodigoFuente.DetectUrls = false;
             rtbCodigoFuente.Font = new Font("Consolas", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
             rtbCodigoFuente.ForeColor = Color.Black;
-            rtbCodigoFuente.Location = new Point(20, 150);
+            rtbCodigoFuente.Location = new Point(65, 150);
             rtbCodigoFuente.Name = "rtbCodigoFuente";
-            rtbCodigoFuente.Size = new Size(500, 440);
+            rtbCodigoFuente.Size = new Size(445, 440);
             rtbCodigoFuente.TabIndex = 16;
             rtbCodigoFuente.Text = "";
             rtbCodigoFuente.WordWrap = false;
@@ -532,12 +533,29 @@
             lblTotalTokens.TabIndex = 0;
             lblTotalTokens.Text = "Tokens: 0";
             // 
+            // rtbNumerosLinea
+            // 
+            rtbNumerosLinea.BackColor = Color.Gainsboro;
+            rtbNumerosLinea.DetectUrls = false;
+            rtbNumerosLinea.Font = new Font("Consolas", 7.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            rtbNumerosLinea.ForeColor = Color.DimGray;
+            rtbNumerosLinea.Location = new Point(20, 150);
+            rtbNumerosLinea.Name = "rtbNumerosLinea";
+            rtbNumerosLinea.ReadOnly = true;
+            rtbNumerosLinea.ScrollBars = RichTextBoxScrollBars.None;
+            rtbNumerosLinea.Size = new Size(45, 440);
+            rtbNumerosLinea.TabIndex = 21;
+            rtbNumerosLinea.TabStop = false;
+            rtbNumerosLinea.Text = "1";
+            rtbNumerosLinea.WordWrap = false;
+            // 
             // FormPrincipal
             // 
             AutoScaleDimensions = new SizeF(9F, 23F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.WhiteSmoke;
             ClientSize = new Size(1217, 693);
+            Controls.Add(rtbNumerosLinea);
             Controls.Add(pnlEstado);
             Controls.Add(tabResultados);
             Controls.Add(lblTitulo);
@@ -604,5 +622,6 @@
         private Label lblTotalLineas;
         private Label lblTotalErrores;
         private Label lblTotalTokens;
+        private RichTextBox rtbNumerosLinea;
     }
 }

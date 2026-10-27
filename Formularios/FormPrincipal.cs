@@ -18,8 +18,70 @@ namespace AnalizadorLexicoCSharp.Formularios
         public FormPrincipal()
         {
             InitializeComponent();
+
+            rtbCodigoFuente.TextChanged += rtbCodigoFuente_TextChanged;
+            rtbCodigoFuente.VScroll += rtbCodigoFuente_VScroll;
+
+            ActualizarNumerosLinea();
+        }
+        private void rtbCodigoFuente_TextChanged(
+    object? sender,
+    EventArgs e)
+        {
+            ActualizarNumerosLinea();
         }
 
+        private void rtbCodigoFuente_VScroll(
+            object? sender,
+            EventArgs e)
+        {
+            SincronizarNumerosLinea();
+        }
+
+        private void ActualizarNumerosLinea()
+        {
+            int cantidadLineas = Math.Max(
+                1,
+                rtbCodigoFuente.Lines.Length);
+
+            StringBuilder numeros = new StringBuilder();
+
+            for (int numero = 1; numero <= cantidadLineas; numero++)
+            {
+                numeros.AppendLine(numero.ToString());
+            }
+
+            rtbNumerosLinea.Text = numeros.ToString();
+
+            rtbNumerosLinea.SelectAll();
+            rtbNumerosLinea.SelectionAlignment =
+                HorizontalAlignment.Right;
+            rtbNumerosLinea.DeselectAll();
+
+            SincronizarNumerosLinea();
+        }
+
+        private void SincronizarNumerosLinea()
+        {
+            int primerCaracterVisible =
+                rtbCodigoFuente.GetCharIndexFromPosition(
+                    new Point(0, 0));
+
+            int primeraLineaVisible =
+                rtbCodigoFuente.GetLineFromCharIndex(
+                    primerCaracterVisible);
+
+            int posicionNumero =
+                rtbNumerosLinea.GetFirstCharIndexFromLine(
+                    primeraLineaVisible);
+
+            if (posicionNumero >= 0)
+            {
+                rtbNumerosLinea.SelectionStart = posicionNumero;
+                rtbNumerosLinea.SelectionLength = 0;
+                rtbNumerosLinea.ScrollToCaret();
+            }
+        }
         private void btnCargarArchivo_Click(object sender, EventArgs e)
         {
             using OpenFileDialog ventanaAbrir = new OpenFileDialog();
