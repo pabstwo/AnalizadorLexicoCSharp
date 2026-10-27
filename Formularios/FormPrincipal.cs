@@ -147,6 +147,7 @@ namespace AnalizadorLexicoCSharp.Formularios
                 dgvTokens.Rows.Clear();
                 dgvErrores.Rows.Clear();
                 dgvSimbolos.Rows.Clear();
+                dgvCategorias.Rows.Clear();
 
                 foreach (var token in resultado.Tokens)
                 {
@@ -176,6 +177,17 @@ namespace AnalizadorLexicoCSharp.Formularios
                         simbolo.PrimeraColumna,
                         simbolo.TipoDato,
                         simbolo.TotalApariciones
+                    );
+                }
+                var categorias = resultado.Tokens
+    .GroupBy(token => token.Tipo)
+    .OrderBy(grupo => grupo.Key.ToString());
+
+                foreach (var categoria in categorias)
+                {
+                    dgvCategorias.Rows.Add(
+                        categoria.Key.ToString(),
+                        categoria.Count()
                     );
                 }
 
@@ -217,6 +229,7 @@ namespace AnalizadorLexicoCSharp.Formularios
             dgvTokens.Rows.Clear();
             dgvErrores.Rows.Clear();
             dgvSimbolos.Rows.Clear();
+            dgvCategorias.Rows.Clear();
 
             lblTotalTokens.Text = "Tokens: 0";
             lblTotalErrores.Text = "Errores: 0";
@@ -321,7 +334,20 @@ namespace AnalizadorLexicoCSharp.Formularios
                         CampoCsv(fila.Cells[3].Value) + ";" +
                         CampoCsv(fila.Cells[4].Value));
                 }
+                contenido.AppendLine();
 
+                contenido.AppendLine("RESUMEN POR CATEGORIA");
+                contenido.AppendLine("Categoria;Cantidad");
+
+                foreach (DataGridViewRow fila in dgvCategorias.Rows)
+                {
+                    if (fila.IsNewRow)
+                        continue;
+
+                    contenido.AppendLine(
+                        CampoCsv(fila.Cells[0].Value) + ";" +
+                        CampoCsv(fila.Cells[1].Value));
+                }
                 contenido.AppendLine();
 
                 
