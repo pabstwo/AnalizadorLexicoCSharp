@@ -155,6 +155,7 @@
             btnExportar.TabIndex = 14;
             btnExportar.Text = "Exportar";
             btnExportar.UseVisualStyleBackColor = false;
+            btnExportar.Click += btnExportar_Click;
             // 
             // lblCodigoFuente
             // 

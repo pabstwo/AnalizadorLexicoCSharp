@@ -165,5 +165,130 @@ namespace AnalizadorLexicoCSharp.Formularios
 
             rtbCodigoFuente.Focus();
         }
+
+        private void btnExportar_Click(object sender, EventArgs e)
+        {
+            if (dgvTokens.Rows.Count == 0)
+            {
+                MessageBox.Show(
+                    "Primero debe realizar un análisis léxico.",
+                    "Sin resultados",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                return;
+            }
+
+            using SaveFileDialog ventanaGuardar = new SaveFileDialog();
+
+            ventanaGuardar.Title = "Exportar resultados del análisis";
+            ventanaGuardar.Filter = "Archivo CSV (*.csv)|*.csv";
+            ventanaGuardar.FileName = "Resultados_Analisis_Lexico.csv";
+            ventanaGuardar.DefaultExt = "csv";
+            ventanaGuardar.AddExtension = true;
+
+            if (ventanaGuardar.ShowDialog() != DialogResult.OK)
+            {
+                return;
+            }
+
+            try
+            {
+                string CampoCsv(object? valor)
+                {
+                    string texto = valor?.ToString() ?? string.Empty;
+
+                    return "\"" + texto.Replace("\"", "\"\"") + "\"";
+                }
+
+                StringBuilder contenido = new StringBuilder();
+
+               
+                contenido.AppendLine("TOKENS");
+                contenido.AppendLine(
+                    "Numero;Lexema;Tipo de token;Linea;Columna");
+
+                foreach (DataGridViewRow fila in dgvTokens.Rows)
+                {
+                    if (fila.IsNewRow)
+                        continue;
+
+                    contenido.AppendLine(
+                        CampoCsv(fila.Cells[0].Value) + ";" +
+                        CampoCsv(fila.Cells[1].Value) + ";" +
+                        CampoCsv(fila.Cells[2].Value) + ";" +
+                        CampoCsv(fila.Cells[3].Value) + ";" +
+                        CampoCsv(fila.Cells[4].Value));
+                }
+
+                contenido.AppendLine();
+
+               
+                contenido.AppendLine("ERRORES");
+                contenido.AppendLine(
+                    "Lexema o caracter;Linea;Columna;Descripcion");
+
+                foreach (DataGridViewRow fila in dgvErrores.Rows)
+                {
+                    if (fila.IsNewRow)
+                        continue;
+
+                    contenido.AppendLine(
+                        CampoCsv(fila.Cells[0].Value) + ";" +
+                        CampoCsv(fila.Cells[1].Value) + ";" +
+                        CampoCsv(fila.Cells[2].Value) + ";" +
+                        CampoCsv(fila.Cells[3].Value));
+                }
+
+                contenido.AppendLine();
+
+                
+                contenido.AppendLine("TABLA DE SIMBOLOS");
+                contenido.AppendLine(
+                    "Nombre;Primera linea;Primera columna;Tipo de dato;Apariciones");
+
+                foreach (DataGridViewRow fila in dgvSimbolos.Rows)
+                {
+                    if (fila.IsNewRow)
+                        continue;
+
+                    contenido.AppendLine(
+                        CampoCsv(fila.Cells[0].Value) + ";" +
+                        CampoCsv(fila.Cells[1].Value) + ";" +
+                        CampoCsv(fila.Cells[2].Value) + ";" +
+                        CampoCsv(fila.Cells[3].Value) + ";" +
+                        CampoCsv(fila.Cells[4].Value));
+                }
+
+                contenido.AppendLine();
+
+                
+                contenido.AppendLine("ESTADISTICAS");
+                contenido.AppendLine(CampoCsv(lblTotalTokens.Text));
+                contenido.AppendLine(CampoCsv(lblTotalErrores.Text));
+                contenido.AppendLine(CampoCsv(lblTotalLineas.Text));
+                contenido.AppendLine(CampoCsv(lblEstado.Text));
+
+                File.WriteAllText(
+                    ventanaGuardar.FileName,
+                    contenido.ToString(),
+                    Encoding.UTF8);
+
+                MessageBox.Show(
+                    "Los resultados se exportaron correctamente.",
+                    "Exportación completada",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "No fue posible exportar los resultados.\n\n" +
+                    ex.Message,
+                    "Error de exportación",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
     }
 }
