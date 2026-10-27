@@ -81,6 +81,7 @@ namespace AnalizadorLexicoCSharp.Formularios
                
                 dgvTokens.Rows.Clear();
                 dgvErrores.Rows.Clear();
+                dgvSimbolos.Rows.Clear();
 
                 foreach (var token in resultado.Tokens)
                 {
@@ -100,6 +101,16 @@ namespace AnalizadorLexicoCSharp.Formularios
                         error.Linea,
                         error.Columna,
                         error.Descripcion
+                    );
+                }
+                foreach (var simbolo in resultado.Simbolos)
+                {
+                    dgvSimbolos.Rows.Add(
+                        simbolo.Nombre,
+                        simbolo.PrimeraLinea,
+                        simbolo.PrimeraColumna,
+                        simbolo.TipoDato,
+                        simbolo.TotalApariciones
                     );
                 }
 
