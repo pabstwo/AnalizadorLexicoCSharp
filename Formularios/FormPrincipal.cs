@@ -8,6 +8,7 @@ using System.Text;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Diagnostics;
 using AnalizadorLexicoCSharp.Analisis;
 
 namespace AnalizadorLexicoCSharp.Formularios
@@ -72,13 +73,15 @@ namespace AnalizadorLexicoCSharp.Formularios
 
             try
             {
+                Stopwatch cronometro = Stopwatch.StartNew();
+
                 AnalizadorLexico analizador = new AnalizadorLexico();
 
                 var resultado = analizador.Analizar(
                     rtbCodigoFuente.Text
                 );
+                cronometro.Stop();
 
-               
                 dgvTokens.Rows.Clear();
                 dgvErrores.Rows.Clear();
                 dgvSimbolos.Rows.Clear();
@@ -113,6 +116,20 @@ namespace AnalizadorLexicoCSharp.Formularios
                         simbolo.TotalApariciones
                     );
                 }
+               
+                lblTotalTokens.Text =
+                    "Tokens: " + resultado.Tokens.Count;
+
+                lblTotalErrores.Text =
+                    "Errores: " + resultado.Errores.Count;
+
+                lblTotalLineas.Text =
+                    "Líneas: " + rtbCodigoFuente.Lines.Length;
+
+                lblEstado.Text =
+                    "Estado: completado en " +
+                    cronometro.Elapsed.TotalMilliseconds.ToString("F2") +
+                    " ms";
 
                 MessageBox.Show(
                     "El análisis léxico finalizó correctamente.",
