@@ -625,8 +625,9 @@ namespace AnalizadorLexicoCSharp.Analisis
 
             StringBuilder lexema = new StringBuilder();
             bool cerrado = false;
+            int profundidad = 1;
 
-          
+            // Agregar /*
             lexema.Append(CaracterActual());
             Avanzar();
 
@@ -635,6 +636,29 @@ namespace AnalizadorLexicoCSharp.Analisis
 
             while (!FinDelCodigo())
             {
+                // Detectar otro /* dentro del comentario
+                if (CaracterActual() == '/' &&
+                    CaracterSiguiente() == '*')
+                {
+                    RegistrarError(
+                        "E08",
+                        "/*",
+                        linea,
+                        columna,
+                        "Los comentarios de bloque anidados no son válidos."
+                    );
+
+                    lexema.Append(CaracterActual());
+                    Avanzar();
+
+                    lexema.Append(CaracterActual());
+                    Avanzar();
+
+                    profundidad++;
+                    continue;
+                }
+
+                // Detectar cierre */
                 if (CaracterActual() == '*' &&
                     CaracterSiguiente() == '/')
                 {
@@ -644,8 +668,15 @@ namespace AnalizadorLexicoCSharp.Analisis
                     lexema.Append(CaracterActual());
                     Avanzar();
 
-                    cerrado = true;
-                    break;
+                    profundidad--;
+
+                    if (profundidad == 0)
+                    {
+                        cerrado = true;
+                        break;
+                    }
+
+                    continue;
                 }
 
                 lexema.Append(CaracterActual());
@@ -676,6 +707,7 @@ namespace AnalizadorLexicoCSharp.Analisis
                 );
             }
         }
+
         private bool EsEscapeValido(char caracter)
         {
             return caracter == 'n' ||

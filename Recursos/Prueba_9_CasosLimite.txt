@@ -1,0 +1,7 @@
+﻿int identificadorConUnNombreExtremadamenteLargoParaComprobarElLimite = 100;
+double numeroConMuchosDecimales = 1234567890.12345678901234567890;
+string cadenaLarga = "Esta es una cadena considerablemente larga para comprobar el reconocimiento del analizador";
+
+/* Comentario externo
+   /* Comentario interno */
+   Fin del comentario externo */

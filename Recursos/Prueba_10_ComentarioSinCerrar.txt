@@ -1,0 +1,4 @@
+﻿int valor = 25;
+
+/* Este comentario de bloque
+no tiene un cierre correcto

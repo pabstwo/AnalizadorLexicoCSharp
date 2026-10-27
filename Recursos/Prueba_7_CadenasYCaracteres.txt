@@ -1,0 +1,6 @@
+﻿string saludo = "Hola mundo";
+string nombre = "Pablo";
+string ruta = "C:\\Datos\\archivo.txt";
+string mensaje = "Linea uno\nLinea dos";
+char letra = 'A';
+char salto = '\n';
