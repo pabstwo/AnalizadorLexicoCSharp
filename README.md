@@ -18,6 +18,20 @@ componentes léxicos de un subconjunto simplificado del lenguaje C#.
 
 ## Estado del proyecto
 
-Actualmente se cuenta con la arquitectura inicial, los modelos de datos,
-la tabla de símbolos y el boceto funcional de la interfaz. El reconocimiento
-completo de tokens se implementará en el siguiente entregable.
+El analizador léxico se encuentra integrado con una interfaz gráfica desarrollada en Windows Forms.
+
+Actualmente permite:
+
+- Escribir o cargar código fuente desde archivos `.cs` y `.txt`.
+- Analizar palabras reservadas, identificadores, números, cadenas, caracteres, operadores y delimitadores.
+- Mostrar los tokens con su lexema, tipo, línea y columna.
+- Detectar y describir errores léxicos.
+- Recuperarse de errores y continuar con el análisis.
+- Generar una tabla de símbolos con tipos de datos y apariciones.
+- Mostrar un resumen de tokens por categoría.
+- Mostrar números de línea en el editor.
+- Calcular estadísticas y tiempo de ejecución.
+- Exportar los resultados del análisis a un archivo CSV.
+- Limpiar completamente la interfaz para realizar un nuevo análisis.
+
+También se incluyeron archivos de prueba para validar casos correctos, números inválidos, errores léxicos y recuperación después de errores.
