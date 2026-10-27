@@ -1,0 +1,7 @@
+string mensaje = "Escape\qincorrecto";
+
+bool resultado = true | false;
+
+int total = 10 # 2;
+
+string textoCorrecto = "Análisis terminado";

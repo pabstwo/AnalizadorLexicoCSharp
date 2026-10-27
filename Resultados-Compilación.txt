@@ -1,0 +1,6 @@
+﻿La recompilación se inició a las 04:02 a. m....
+1>------ Operación Recompilar todo iniciada: proyecto: AnalizadorLexicoCSharp, configuración: Debug Any CPU ------
+Se ha restaurado C:\Users\Pablo\OneDrive\Documents\Lenguajes Formales\AnalizadorLexicoCSharp\AnalizadorLexicoCSharp\AnalizadorLexicoCSharp.csproj (en 2 ms).
+1>AnalizadorLexicoCSharp -> C:\Users\Pablo\OneDrive\Documents\Lenguajes Formales\AnalizadorLexicoCSharp\AnalizadorLexicoCSharp\bin\Debug\net8.0-windows\AnalizadorLexicoCSharp.dll
+========== Recompilar todo: 1 correcto, 0 con errores, 0 omitido ===========
+========== Recompilar completado a las 04:02 a. m. y tardó 00.588 segundos ==========

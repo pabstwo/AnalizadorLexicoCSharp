@@ -1,0 +1,7 @@
+double precio = 25.;
+
+double promedio = 3.14.5;
+
+int 2contador = 10;
+
+int numeroCorrecto = 50;

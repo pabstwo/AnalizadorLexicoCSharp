@@ -28,15 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle9 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle10 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle11 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle12 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle13 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle14 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle15 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle16 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle17 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle18 = new DataGridViewCellStyle();
             lblTitulo = new Label();
             btnCargarArchivo = new Button();
             btnAnalizar = new Button();
@@ -68,10 +68,15 @@
             colTipoDato = new DataGridViewTextBoxColumn();
             colApariciones = new DataGridViewTextBoxColumn();
             pnlEstado = new Panel();
-            lblTotalTokens = new Label();
-            lblTotalErrores = new Label();
-            lblTotalLineas = new Label();
             lblEstado = new Label();
+            lblTotalLineas = new Label();
+            lblTotalErrores = new Label();
+            lblTotalTokens = new Label();
+            rtbNumerosLinea = new RichTextBox();
+            tabResumen = new TabPage();
+            dgvCategorias = new DataGridView();
+            colCategoria = new DataGridViewTextBoxColumn();
+            colCantidad = new DataGridViewTextBoxColumn();
             tabResultados.SuspendLayout();
             tabTokens.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvTokens).BeginInit();
@@ -80,6 +85,8 @@
             tabSimbolos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvSimbolos).BeginInit();
             pnlEstado.SuspendLayout();
+            tabResumen.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvCategorias).BeginInit();
             SuspendLayout();
             // 
             // lblTitulo
@@ -108,6 +115,7 @@
             btnCargarArchivo.TabIndex = 11;
             btnCargarArchivo.Text = "Cargar Archivo";
             btnCargarArchivo.UseVisualStyleBackColor = false;
+            btnCargarArchivo.Click += btnCargarArchivo_Click;
             // 
             // btnAnalizar
             // 
@@ -123,6 +131,7 @@
             btnAnalizar.TabIndex = 12;
             btnAnalizar.Text = "Analizar";
             btnAnalizar.UseVisualStyleBackColor = false;
+            btnAnalizar.Click += btnAnalizar_Click;
             // 
             // btnLimpiar
             // 
@@ -138,6 +147,7 @@
             btnLimpiar.TabIndex = 13;
             btnLimpiar.Text = "Limpiar";
             btnLimpiar.UseVisualStyleBackColor = false;
+            btnLimpiar.Click += btnLimpiar_Click;
             // 
             // btnExportar
             // 
@@ -152,6 +162,7 @@
             btnExportar.TabIndex = 14;
             btnExportar.Text = "Exportar";
             btnExportar.UseVisualStyleBackColor = false;
+            btnExportar.Click += btnExportar_Click;
             // 
             // lblCodigoFuente
             // 
@@ -173,9 +184,9 @@
             rtbCodigoFuente.DetectUrls = false;
             rtbCodigoFuente.Font = new Font("Consolas", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
             rtbCodigoFuente.ForeColor = Color.Black;
-            rtbCodigoFuente.Location = new Point(20, 150);
+            rtbCodigoFuente.Location = new Point(65, 150);
             rtbCodigoFuente.Name = "rtbCodigoFuente";
-            rtbCodigoFuente.Size = new Size(500, 440);
+            rtbCodigoFuente.Size = new Size(445, 440);
             rtbCodigoFuente.TabIndex = 16;
             rtbCodigoFuente.Text = "";
             rtbCodigoFuente.WordWrap = false;
@@ -203,6 +214,7 @@
             tabResultados.Controls.Add(tabTokens);
             tabResultados.Controls.Add(tabErrores);
             tabResultados.Controls.Add(tabSimbolos);
+            tabResultados.Controls.Add(tabResumen);
             tabResultados.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             tabResultados.Location = new Point(550, 120);
             tabResultados.Name = "tabResultados";
@@ -226,30 +238,30 @@
             // 
             dgvTokens.AllowUserToAddRows = false;
             dgvTokens.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle1.BackColor = Color.WhiteSmoke;
-            dataGridViewCellStyle1.ForeColor = Color.Black;
-            dgvTokens.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle10.BackColor = Color.WhiteSmoke;
+            dataGridViewCellStyle10.ForeColor = Color.Black;
+            dgvTokens.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle10;
             dgvTokens.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvTokens.BackgroundColor = Color.White;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = Color.LightSteelBlue;
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle2.ForeColor = Color.Black;
-            dataGridViewCellStyle2.SelectionBackColor = Color.LightSteelBlue;
-            dataGridViewCellStyle2.SelectionForeColor = Color.Black;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
-            dgvTokens.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle11.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle11.BackColor = Color.LightSteelBlue;
+            dataGridViewCellStyle11.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle11.ForeColor = Color.Black;
+            dataGridViewCellStyle11.SelectionBackColor = Color.LightSteelBlue;
+            dataGridViewCellStyle11.SelectionForeColor = Color.Black;
+            dataGridViewCellStyle11.WrapMode = DataGridViewTriState.True;
+            dgvTokens.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle11;
             dgvTokens.ColumnHeadersHeight = 38;
             dgvTokens.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dgvTokens.Columns.AddRange(new DataGridViewColumn[] { colNumero, colLexema, colTipo, colLinea, colColumna });
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = SystemColors.Window;
-            dataGridViewCellStyle3.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle3.ForeColor = Color.Black;
-            dataGridViewCellStyle3.SelectionBackColor = Color.AliceBlue;
-            dataGridViewCellStyle3.SelectionForeColor = Color.Black;
-            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
-            dgvTokens.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle12.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle12.BackColor = SystemColors.Window;
+            dataGridViewCellStyle12.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle12.ForeColor = Color.Black;
+            dataGridViewCellStyle12.SelectionBackColor = Color.AliceBlue;
+            dataGridViewCellStyle12.SelectionForeColor = Color.Black;
+            dataGridViewCellStyle12.WrapMode = DataGridViewTriState.False;
+            dgvTokens.DefaultCellStyle = dataGridViewCellStyle12;
             dgvTokens.Dock = DockStyle.Fill;
             dgvTokens.EnableHeadersVisualStyles = false;
             dgvTokens.GridColor = Color.Gainsboro;
@@ -315,30 +327,30 @@
             // 
             dgvErrores.AllowUserToAddRows = false;
             dgvErrores.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle4.BackColor = Color.WhiteSmoke;
-            dataGridViewCellStyle4.ForeColor = Color.Black;
-            dgvErrores.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle13.BackColor = Color.WhiteSmoke;
+            dataGridViewCellStyle13.ForeColor = Color.Black;
+            dgvErrores.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle13;
             dgvErrores.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvErrores.BackgroundColor = Color.White;
-            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = Color.MistyRose;
-            dataGridViewCellStyle5.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle5.ForeColor = Color.Black;
-            dataGridViewCellStyle5.SelectionBackColor = Color.MistyRose;
-            dataGridViewCellStyle5.SelectionForeColor = Color.Black;
-            dataGridViewCellStyle5.WrapMode = DataGridViewTriState.True;
-            dgvErrores.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle14.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle14.BackColor = Color.MistyRose;
+            dataGridViewCellStyle14.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle14.ForeColor = Color.Black;
+            dataGridViewCellStyle14.SelectionBackColor = Color.MistyRose;
+            dataGridViewCellStyle14.SelectionForeColor = Color.Black;
+            dataGridViewCellStyle14.WrapMode = DataGridViewTriState.True;
+            dgvErrores.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle14;
             dgvErrores.ColumnHeadersHeight = 38;
             dgvErrores.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dgvErrores.Columns.AddRange(new DataGridViewColumn[] { colErrorLexema, colErrorLinea, colErrorColumna, colErrorDescripcion });
-            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = SystemColors.Window;
-            dataGridViewCellStyle6.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle6.ForeColor = Color.Black;
-            dataGridViewCellStyle6.SelectionBackColor = Color.MistyRose;
-            dataGridViewCellStyle6.SelectionForeColor = Color.Black;
-            dataGridViewCellStyle6.WrapMode = DataGridViewTriState.False;
-            dgvErrores.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle15.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle15.BackColor = SystemColors.Window;
+            dataGridViewCellStyle15.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle15.ForeColor = Color.Black;
+            dataGridViewCellStyle15.SelectionBackColor = Color.MistyRose;
+            dataGridViewCellStyle15.SelectionForeColor = Color.Black;
+            dataGridViewCellStyle15.WrapMode = DataGridViewTriState.False;
+            dgvErrores.DefaultCellStyle = dataGridViewCellStyle15;
             dgvErrores.Dock = DockStyle.Fill;
             dgvErrores.EnableHeadersVisualStyles = false;
             dgvErrores.GridColor = Color.Gainsboro;
@@ -397,30 +409,30 @@
             // 
             dgvSimbolos.AllowUserToAddRows = false;
             dgvSimbolos.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle7.BackColor = Color.WhiteSmoke;
-            dataGridViewCellStyle7.ForeColor = Color.Black;
-            dgvSimbolos.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle16.BackColor = Color.WhiteSmoke;
+            dataGridViewCellStyle16.ForeColor = Color.Black;
+            dgvSimbolos.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle16;
             dgvSimbolos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvSimbolos.BackgroundColor = Color.White;
-            dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle8.BackColor = Color.LightSteelBlue;
-            dataGridViewCellStyle8.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle8.ForeColor = Color.Black;
-            dataGridViewCellStyle8.SelectionBackColor = Color.LightSteelBlue;
-            dataGridViewCellStyle8.SelectionForeColor = Color.Black;
-            dataGridViewCellStyle8.WrapMode = DataGridViewTriState.True;
-            dgvSimbolos.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle8;
-            dgvSimbolos.ColumnHeadersHeight = 38;
+            dataGridViewCellStyle17.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle17.BackColor = Color.LightSteelBlue;
+            dataGridViewCellStyle17.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle17.ForeColor = Color.Black;
+            dataGridViewCellStyle17.SelectionBackColor = Color.LightSteelBlue;
+            dataGridViewCellStyle17.SelectionForeColor = Color.Black;
+            dataGridViewCellStyle17.WrapMode = DataGridViewTriState.True;
+            dgvSimbolos.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle17;
+            dgvSimbolos.ColumnHeadersHeight = 45;
             dgvSimbolos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dgvSimbolos.Columns.AddRange(new DataGridViewColumn[] { colSimboloNombre, colPrimeraLinea, colPrimeraColumna, colTipoDato, colApariciones });
-            dataGridViewCellStyle9.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle9.BackColor = SystemColors.Window;
-            dataGridViewCellStyle9.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle9.ForeColor = Color.Black;
-            dataGridViewCellStyle9.SelectionBackColor = Color.AliceBlue;
-            dataGridViewCellStyle9.SelectionForeColor = Color.Black;
-            dataGridViewCellStyle9.WrapMode = DataGridViewTriState.False;
-            dgvSimbolos.DefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle18.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle18.BackColor = SystemColors.Window;
+            dataGridViewCellStyle18.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle18.ForeColor = Color.Black;
+            dataGridViewCellStyle18.SelectionBackColor = Color.AliceBlue;
+            dataGridViewCellStyle18.SelectionForeColor = Color.Black;
+            dataGridViewCellStyle18.WrapMode = DataGridViewTriState.False;
+            dgvSimbolos.DefaultCellStyle = dataGridViewCellStyle18;
             dgvSimbolos.Dock = DockStyle.Fill;
             dgvSimbolos.EnableHeadersVisualStyles = false;
             dgvSimbolos.GridColor = Color.Gainsboro;
@@ -484,27 +496,16 @@
             pnlEstado.Size = new Size(1185, 45);
             pnlEstado.TabIndex = 20;
             // 
-            // lblTotalTokens
+            // lblEstado
             // 
-            lblTotalTokens.AutoSize = true;
-            lblTotalTokens.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
-            lblTotalTokens.ForeColor = Color.Black;
-            lblTotalTokens.Location = new Point(15, 12);
-            lblTotalTokens.Name = "lblTotalTokens";
-            lblTotalTokens.Size = new Size(73, 20);
-            lblTotalTokens.TabIndex = 0;
-            lblTotalTokens.Text = "Tokens: 0";
-            // 
-            // lblTotalErrores
-            // 
-            lblTotalErrores.AutoSize = true;
-            lblTotalErrores.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
-            lblTotalErrores.ForeColor = Color.Black;
-            lblTotalErrores.Location = new Point(130, 12);
-            lblTotalErrores.Name = "lblTotalErrores";
-            lblTotalErrores.Size = new Size(74, 20);
-            lblTotalErrores.TabIndex = 1;
-            lblTotalErrores.Text = "Errores: 0";
+            lblEstado.AutoSize = true;
+            lblEstado.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
+            lblEstado.ForeColor = Color.Black;
+            lblEstado.Location = new Point(500, 12);
+            lblEstado.Name = "lblEstado";
+            lblEstado.Size = new Size(89, 20);
+            lblEstado.TabIndex = 3;
+            lblEstado.Text = "Estado: listo";
             // 
             // lblTotalLineas
             // 
@@ -517,16 +518,89 @@
             lblTotalLineas.TabIndex = 2;
             lblTotalLineas.Text = "Líneas: 0";
             // 
-            // lblEstado
+            // lblTotalErrores
             // 
-            lblEstado.AutoSize = true;
-            lblEstado.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
-            lblEstado.ForeColor = Color.Black;
-            lblEstado.Location = new Point(500, 12);
-            lblEstado.Name = "lblEstado";
-            lblEstado.Size = new Size(89, 20);
-            lblEstado.TabIndex = 3;
-            lblEstado.Text = "Estado: listo";
+            lblTotalErrores.AutoSize = true;
+            lblTotalErrores.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
+            lblTotalErrores.ForeColor = Color.Black;
+            lblTotalErrores.Location = new Point(130, 12);
+            lblTotalErrores.Name = "lblTotalErrores";
+            lblTotalErrores.Size = new Size(74, 20);
+            lblTotalErrores.TabIndex = 1;
+            lblTotalErrores.Text = "Errores: 0";
+            // 
+            // lblTotalTokens
+            // 
+            lblTotalTokens.AutoSize = true;
+            lblTotalTokens.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
+            lblTotalTokens.ForeColor = Color.Black;
+            lblTotalTokens.Location = new Point(15, 12);
+            lblTotalTokens.Name = "lblTotalTokens";
+            lblTotalTokens.Size = new Size(73, 20);
+            lblTotalTokens.TabIndex = 0;
+            lblTotalTokens.Text = "Tokens: 0";
+            // 
+            // rtbNumerosLinea
+            // 
+            rtbNumerosLinea.BackColor = Color.Gainsboro;
+            rtbNumerosLinea.DetectUrls = false;
+            rtbNumerosLinea.Font = new Font("Consolas", 7.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            rtbNumerosLinea.ForeColor = Color.DimGray;
+            rtbNumerosLinea.Location = new Point(20, 150);
+            rtbNumerosLinea.Name = "rtbNumerosLinea";
+            rtbNumerosLinea.ReadOnly = true;
+            rtbNumerosLinea.ScrollBars = RichTextBoxScrollBars.None;
+            rtbNumerosLinea.Size = new Size(45, 440);
+            rtbNumerosLinea.TabIndex = 21;
+            rtbNumerosLinea.TabStop = false;
+            rtbNumerosLinea.Text = "1";
+            rtbNumerosLinea.WordWrap = false;
+            // 
+            // tabResumen
+            // 
+            tabResumen.Controls.Add(dgvCategorias);
+            tabResumen.Location = new Point(4, 32);
+            tabResumen.Name = "tabResumen";
+            tabResumen.Padding = new Padding(3);
+            tabResumen.Size = new Size(612, 434);
+            tabResumen.TabIndex = 3;
+            tabResumen.Text = "Resumen";
+            tabResumen.UseVisualStyleBackColor = true;
+            // 
+            // dgvCategorias
+            // 
+            dgvCategorias.AllowUserToAddRows = false;
+            dgvCategorias.AllowUserToDeleteRows = false;
+            dgvCategorias.AllowUserToResizeRows = false;
+            dgvCategorias.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvCategorias.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvCategorias.Columns.AddRange(new DataGridViewColumn[] { colCategoria, colCantidad });
+            dgvCategorias.Dock = DockStyle.Fill;
+            dgvCategorias.Location = new Point(3, 3);
+            dgvCategorias.MultiSelect = false;
+            dgvCategorias.Name = "dgvCategorias";
+            dgvCategorias.ReadOnly = true;
+            dgvCategorias.RowHeadersVisible = false;
+            dgvCategorias.RowHeadersWidth = 51;
+            dgvCategorias.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvCategorias.Size = new Size(606, 428);
+            dgvCategorias.TabIndex = 0;
+            // 
+            // colCategoria
+            // 
+            colCategoria.FillWeight = 65F;
+            colCategoria.HeaderText = "Categoría";
+            colCategoria.MinimumWidth = 6;
+            colCategoria.Name = "colCategoria";
+            colCategoria.ReadOnly = true;
+            // 
+            // colCantidad
+            // 
+            colCantidad.FillWeight = 35F;
+            colCantidad.HeaderText = "Cantidad";
+            colCantidad.MinimumWidth = 6;
+            colCantidad.Name = "colCantidad";
+            colCantidad.ReadOnly = true;
             // 
             // FormPrincipal
             // 
@@ -534,6 +608,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.WhiteSmoke;
             ClientSize = new Size(1217, 693);
+            Controls.Add(rtbNumerosLinea);
             Controls.Add(pnlEstado);
             Controls.Add(tabResultados);
             Controls.Add(lblTitulo);
@@ -559,6 +634,8 @@
             ((System.ComponentModel.ISupportInitialize)dgvSimbolos).EndInit();
             pnlEstado.ResumeLayout(false);
             pnlEstado.PerformLayout();
+            tabResumen.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dgvCategorias).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -600,5 +677,10 @@
         private Label lblTotalLineas;
         private Label lblTotalErrores;
         private Label lblTotalTokens;
+        private RichTextBox rtbNumerosLinea;
+        private TabPage tabResumen;
+        private DataGridView dgvCategorias;
+        private DataGridViewTextBoxColumn colCategoria;
+        private DataGridViewTextBoxColumn colCantidad;
     }
 }

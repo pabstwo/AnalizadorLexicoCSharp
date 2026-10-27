@@ -1,0 +1,8 @@
+﻿int 2edad = 20;
+string nombre = "Pablo;
+double precio = 12.5.8;
+char letra = 'abc';
+bool disponible = true & false;
+int total = 10 @ 2;
+string ruta = "Carpeta\qArchivo";
+/* Este comentario de bloque no tiene cierre
