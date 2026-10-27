@@ -78,7 +78,9 @@ namespace AnalizadorLexicoCSharp.Formularios
                     rtbCodigoFuente.Text
                 );
 
+               
                 dgvTokens.Rows.Clear();
+                dgvErrores.Rows.Clear();
 
                 foreach (var token in resultado.Tokens)
                 {
@@ -88,6 +90,16 @@ namespace AnalizadorLexicoCSharp.Formularios
                         token.Tipo.ToString(),
                         token.Linea,
                         token.Columna
+                    );
+                }
+
+                foreach (var error in resultado.Errores)
+                {
+                    dgvErrores.Rows.Add(
+                        error.Lexema,
+                        error.Linea,
+                        error.Columna,
+                        error.Descripcion
                     );
                 }
 
