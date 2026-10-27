@@ -8,6 +8,7 @@ using System.Text;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using AnalizadorLexicoCSharp.Analisis;
 
 namespace AnalizadorLexicoCSharp.Formularios
 {
@@ -52,6 +53,58 @@ namespace AnalizadorLexicoCSharp.Formularios
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Error);
                 }
+            }
+        }
+
+        private void btnAnalizar_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(rtbCodigoFuente.Text))
+            {
+                MessageBox.Show(
+                    "Debe escribir o cargar código fuente antes de analizar.",
+                    "Código vacío",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                rtbCodigoFuente.Focus();
+                return;
+            }
+
+            try
+            {
+                AnalizadorLexico analizador = new AnalizadorLexico();
+
+                var resultado = analizador.Analizar(
+                    rtbCodigoFuente.Text
+                );
+
+                dgvTokens.Rows.Clear();
+
+                foreach (var token in resultado.Tokens)
+                {
+                    dgvTokens.Rows.Add(
+                        token.Numero,
+                        token.Lexema,
+                        token.Tipo.ToString(),
+                        token.Linea,
+                        token.Columna
+                    );
+                }
+
+                MessageBox.Show(
+                    "El análisis léxico finalizó correctamente.",
+                    "Análisis terminado",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Ocurrió un problema durante el análisis.\n\n" +
+                    ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
     }

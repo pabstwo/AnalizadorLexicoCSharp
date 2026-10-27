@@ -124,6 +124,7 @@
             btnAnalizar.TabIndex = 12;
             btnAnalizar.Text = "Analizar";
             btnAnalizar.UseVisualStyleBackColor = false;
+            btnAnalizar.Click += btnAnalizar_Click;
             // 
             // btnLimpiar
             // 
