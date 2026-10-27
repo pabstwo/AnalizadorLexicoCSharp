@@ -140,6 +140,7 @@
             btnLimpiar.TabIndex = 13;
             btnLimpiar.Text = "Limpiar";
             btnLimpiar.UseVisualStyleBackColor = false;
+            btnLimpiar.Click += btnLimpiar_Click;
             // 
             // btnExportar
             // 

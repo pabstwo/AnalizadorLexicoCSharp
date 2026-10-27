@@ -116,7 +116,7 @@ namespace AnalizadorLexicoCSharp.Formularios
                         simbolo.TotalApariciones
                     );
                 }
-               
+
                 lblTotalTokens.Text =
                     "Tokens: " + resultado.Tokens.Count;
 
@@ -146,6 +146,24 @@ namespace AnalizadorLexicoCSharp.Formularios
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }
+        }
+
+        private void btnLimpiar_Click(object sender, EventArgs e)
+        {
+            rtbCodigoFuente.Clear();
+
+            dgvTokens.Rows.Clear();
+            dgvErrores.Rows.Clear();
+            dgvSimbolos.Rows.Clear();
+
+            lblTotalTokens.Text = "Tokens: 0";
+            lblTotalErrores.Text = "Errores: 0";
+            lblTotalLineas.Text = "Líneas: 0";
+            lblEstado.Text = "Estado: listo";
+
+            tabResultados.SelectedTab = tabTokens;
+
+            rtbCodigoFuente.Focus();
         }
     }
 }
