@@ -108,6 +108,7 @@
             btnCargarArchivo.TabIndex = 11;
             btnCargarArchivo.Text = "Cargar Archivo";
             btnCargarArchivo.UseVisualStyleBackColor = false;
+            btnCargarArchivo.Click += btnCargarArchivo_Click;
             // 
             // btnAnalizar
             // 
