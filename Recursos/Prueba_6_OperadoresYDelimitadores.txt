@@ -1,0 +1,13 @@
+﻿int a = 10;
+int b = 3;
+int suma = a + b;
+int resta = a - b;
+int producto = a * b;
+double division = a / b;
+bool mayor = a >= b;
+bool diferente = a != b;
+
+if (mayor && diferente)
+{
+    a = a + 1;
+}

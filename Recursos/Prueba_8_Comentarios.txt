@@ -1,0 +1,8 @@
+﻿// Comentario de una sola linea
+int contador = 0;
+
+/* Comentario de bloque
+   correctamente cerrado */
+contador = contador + 1;
+
+// Fin de la prueba
