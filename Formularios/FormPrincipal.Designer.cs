@@ -67,16 +67,18 @@
             colPrimeraColumna = new DataGridViewTextBoxColumn();
             colTipoDato = new DataGridViewTextBoxColumn();
             colApariciones = new DataGridViewTextBoxColumn();
+            tabResumen = new TabPage();
+            dgvCategorias = new DataGridView();
+            colCategoria = new DataGridViewTextBoxColumn();
+            colCantidad = new DataGridViewTextBoxColumn();
             pnlEstado = new Panel();
             lblEstado = new Label();
             lblTotalLineas = new Label();
             lblTotalErrores = new Label();
             lblTotalTokens = new Label();
             rtbNumerosLinea = new RichTextBox();
-            tabResumen = new TabPage();
-            dgvCategorias = new DataGridView();
-            colCategoria = new DataGridViewTextBoxColumn();
-            colCantidad = new DataGridViewTextBoxColumn();
+            btnDiccionario = new Button();
+            pnlEncabezado.SuspendLayout();
             tabResultados.SuspendLayout();
             tabTokens.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvTokens).BeginInit();
@@ -84,9 +86,9 @@
             ((System.ComponentModel.ISupportInitialize)dgvErrores).BeginInit();
             tabSimbolos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvSimbolos).BeginInit();
-            pnlEstado.SuspendLayout();
             tabResumen.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvCategorias).BeginInit();
+            pnlEstado.SuspendLayout();
             SuspendLayout();
             // 
             // lblTitulo
@@ -195,6 +197,7 @@
             // 
             pnlEncabezado.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             pnlEncabezado.BackColor = Color.AliceBlue;
+            pnlEncabezado.Controls.Add(btnDiccionario);
             pnlEncabezado.Location = new Point(0, 0);
             pnlEncabezado.Name = "pnlEncabezado";
             pnlEncabezado.Size = new Size(1185, 110);
@@ -482,6 +485,52 @@
             colApariciones.Name = "colApariciones";
             colApariciones.ReadOnly = true;
             // 
+            // tabResumen
+            // 
+            tabResumen.Controls.Add(dgvCategorias);
+            tabResumen.Location = new Point(4, 32);
+            tabResumen.Name = "tabResumen";
+            tabResumen.Padding = new Padding(3);
+            tabResumen.Size = new Size(612, 434);
+            tabResumen.TabIndex = 3;
+            tabResumen.Text = "Resumen";
+            tabResumen.UseVisualStyleBackColor = true;
+            // 
+            // dgvCategorias
+            // 
+            dgvCategorias.AllowUserToAddRows = false;
+            dgvCategorias.AllowUserToDeleteRows = false;
+            dgvCategorias.AllowUserToResizeRows = false;
+            dgvCategorias.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvCategorias.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvCategorias.Columns.AddRange(new DataGridViewColumn[] { colCategoria, colCantidad });
+            dgvCategorias.Dock = DockStyle.Fill;
+            dgvCategorias.Location = new Point(3, 3);
+            dgvCategorias.MultiSelect = false;
+            dgvCategorias.Name = "dgvCategorias";
+            dgvCategorias.ReadOnly = true;
+            dgvCategorias.RowHeadersVisible = false;
+            dgvCategorias.RowHeadersWidth = 51;
+            dgvCategorias.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvCategorias.Size = new Size(606, 428);
+            dgvCategorias.TabIndex = 0;
+            // 
+            // colCategoria
+            // 
+            colCategoria.FillWeight = 65F;
+            colCategoria.HeaderText = "Categoría";
+            colCategoria.MinimumWidth = 6;
+            colCategoria.Name = "colCategoria";
+            colCategoria.ReadOnly = true;
+            // 
+            // colCantidad
+            // 
+            colCantidad.FillWeight = 35F;
+            colCantidad.HeaderText = "Cantidad";
+            colCantidad.MinimumWidth = 6;
+            colCantidad.Name = "colCantidad";
+            colCantidad.ReadOnly = true;
+            // 
             // pnlEstado
             // 
             pnlEstado.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
@@ -556,51 +605,19 @@
             rtbNumerosLinea.Text = "1";
             rtbNumerosLinea.WordWrap = false;
             // 
-            // tabResumen
+            // btnDiccionario
             // 
-            tabResumen.Controls.Add(dgvCategorias);
-            tabResumen.Location = new Point(4, 32);
-            tabResumen.Name = "tabResumen";
-            tabResumen.Padding = new Padding(3);
-            tabResumen.Size = new Size(612, 434);
-            tabResumen.TabIndex = 3;
-            tabResumen.Text = "Resumen";
-            tabResumen.UseVisualStyleBackColor = true;
-            // 
-            // dgvCategorias
-            // 
-            dgvCategorias.AllowUserToAddRows = false;
-            dgvCategorias.AllowUserToDeleteRows = false;
-            dgvCategorias.AllowUserToResizeRows = false;
-            dgvCategorias.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvCategorias.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvCategorias.Columns.AddRange(new DataGridViewColumn[] { colCategoria, colCantidad });
-            dgvCategorias.Dock = DockStyle.Fill;
-            dgvCategorias.Location = new Point(3, 3);
-            dgvCategorias.MultiSelect = false;
-            dgvCategorias.Name = "dgvCategorias";
-            dgvCategorias.ReadOnly = true;
-            dgvCategorias.RowHeadersVisible = false;
-            dgvCategorias.RowHeadersWidth = 51;
-            dgvCategorias.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvCategorias.Size = new Size(606, 428);
-            dgvCategorias.TabIndex = 0;
-            // 
-            // colCategoria
-            // 
-            colCategoria.FillWeight = 65F;
-            colCategoria.HeaderText = "Categoría";
-            colCategoria.MinimumWidth = 6;
-            colCategoria.Name = "colCategoria";
-            colCategoria.ReadOnly = true;
-            // 
-            // colCantidad
-            // 
-            colCantidad.FillWeight = 35F;
-            colCantidad.HeaderText = "Cantidad";
-            colCantidad.MinimumWidth = 6;
-            colCantidad.Name = "colCantidad";
-            colCantidad.ReadOnly = true;
+            btnDiccionario.BackColor = Color.LightBlue;
+            btnDiccionario.Cursor = Cursors.Hand;
+            btnDiccionario.FlatStyle = FlatStyle.Flat;
+            btnDiccionario.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            btnDiccionario.ForeColor = Color.Black;
+            btnDiccionario.Location = new Point(526, 65);
+            btnDiccionario.Name = "btnDiccionario";
+            btnDiccionario.Size = new Size(130, 40);
+            btnDiccionario.TabIndex = 22;
+            btnDiccionario.Text = "Diccionario";
+            btnDiccionario.UseVisualStyleBackColor = false;
             // 
             // FormPrincipal
             // 
@@ -625,6 +642,7 @@
             Name = "FormPrincipal";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Analizador léxico - C#";
+            pnlEncabezado.ResumeLayout(false);
             tabResultados.ResumeLayout(false);
             tabTokens.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvTokens).EndInit();
@@ -632,10 +650,10 @@
             ((System.ComponentModel.ISupportInitialize)dgvErrores).EndInit();
             tabSimbolos.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvSimbolos).EndInit();
-            pnlEstado.ResumeLayout(false);
-            pnlEstado.PerformLayout();
             tabResumen.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvCategorias).EndInit();
+            pnlEstado.ResumeLayout(false);
+            pnlEstado.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -682,5 +700,6 @@
         private DataGridView dgvCategorias;
         private DataGridViewTextBoxColumn colCategoria;
         private DataGridViewTextBoxColumn colCantidad;
+        private Button btnDiccionario;
     }
 }
