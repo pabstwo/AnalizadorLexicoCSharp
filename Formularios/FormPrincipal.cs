@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
-using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Diagnostics;
 using AnalizadorLexicoCSharp.Analisis;
+using AnalizadorLexicoCSharp.Modelos;
+using ClosedXML.Excel;
 
 namespace AnalizadorLexicoCSharp.Formularios
 {
@@ -18,6 +20,8 @@ namespace AnalizadorLexicoCSharp.Formularios
         public FormPrincipal()
         {
             InitializeComponent();
+
+            btnDiccionario.Click += btnDiccionario_Click;
 
             rtbCodigoFuente.TextChanged += rtbCodigoFuente_TextChanged;
             rtbCodigoFuente.VScroll += rtbCodigoFuente_VScroll;
@@ -240,8 +244,18 @@ namespace AnalizadorLexicoCSharp.Formularios
 
             rtbCodigoFuente.Focus();
         }
+        private void btnDiccionario_Click(
+    object? sender,
+    EventArgs e)
+        {
+            using FormDiccionario formularioDiccionario =
+                new FormDiccionario();
 
-        private void btnExportar_Click(object sender, EventArgs e)
+            formularioDiccionario.ShowDialog(this);
+        }
+        private void btnExportar_Click(
+     object? sender,
+     EventArgs e)
         {
             if (dgvTokens.Rows.Count == 0)
             {
@@ -249,134 +263,350 @@ namespace AnalizadorLexicoCSharp.Formularios
                     "Primero debe realizar un análisis léxico.",
                     "Sin resultados",
                     MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
+                    MessageBoxIcon.Warning
+                );
 
                 return;
             }
 
-            using SaveFileDialog ventanaGuardar = new SaveFileDialog();
+            using SaveFileDialog ventanaGuardar =
+                new SaveFileDialog();
 
-            ventanaGuardar.Title = "Exportar resultados del análisis";
-            ventanaGuardar.Filter = "Archivo CSV (*.csv)|*.csv";
-            ventanaGuardar.FileName = "Resultados_Analisis_Lexico.csv";
-            ventanaGuardar.DefaultExt = "csv";
+            ventanaGuardar.Title =
+                "Exportar resultados del análisis";
+
+            ventanaGuardar.Filter =
+                "Libro de Excel (*.xlsx)|*.xlsx";
+
+            ventanaGuardar.FileName =
+                "Resultados_Analisis_Lexico.xlsx";
+
+            ventanaGuardar.DefaultExt = "xlsx";
             ventanaGuardar.AddExtension = true;
 
-            if (ventanaGuardar.ShowDialog() != DialogResult.OK)
+            if (ventanaGuardar.ShowDialog() !=
+                DialogResult.OK)
             {
                 return;
             }
 
             try
             {
-                string CampoCsv(object? valor)
-                {
-                    string texto = valor?.ToString() ?? string.Empty;
+                using XLWorkbook libroExcel =
+                    new XLWorkbook();
 
-                    return "\"" + texto.Replace("\"", "\"\"") + "\"";
-                }
+                ExportarDataGridView(
+                    libroExcel,
+                    dgvTokens,
+                    "Tokens",
+                    "TablaTokens",
+                    XLTableTheme.TableStyleMedium2
+                );
 
-                StringBuilder contenido = new StringBuilder();
+                ExportarDataGridView(
+                    libroExcel,
+                    dgvErrores,
+                    "Errores",
+                    "TablaErrores",
+                    XLTableTheme.TableStyleMedium4
+                );
 
-               
-                contenido.AppendLine("TOKENS");
-                contenido.AppendLine(
-                    "Numero;Lexema;Tipo de token;Linea;Columna");
+                ExportarDataGridView(
+                    libroExcel,
+                    dgvSimbolos,
+                    "Simbolos",
+                    "TablaSimbolos",
+                    XLTableTheme.TableStyleMedium9
+                );
 
-                foreach (DataGridViewRow fila in dgvTokens.Rows)
-                {
-                    if (fila.IsNewRow)
-                        continue;
+                ExportarDataGridView(
+                    libroExcel,
+                    dgvCategorias,
+                    "Categorias",
+                    "TablaCategorias",
+                    XLTableTheme.TableStyleMedium5
+                );
 
-                    contenido.AppendLine(
-                        CampoCsv(fila.Cells[0].Value) + ";" +
-                        CampoCsv(fila.Cells[1].Value) + ";" +
-                        CampoCsv(fila.Cells[2].Value) + ";" +
-                        CampoCsv(fila.Cells[3].Value) + ";" +
-                        CampoCsv(fila.Cells[4].Value));
-                }
+                ExportarResumen(libroExcel);
+                ExportarDiccionario(libroExcel);
 
-                contenido.AppendLine();
-
-               
-                contenido.AppendLine("ERRORES");
-                contenido.AppendLine(
-                    "Lexema o caracter;Linea;Columna;Descripcion");
-
-                foreach (DataGridViewRow fila in dgvErrores.Rows)
-                {
-                    if (fila.IsNewRow)
-                        continue;
-
-                    contenido.AppendLine(
-                        CampoCsv(fila.Cells[0].Value) + ";" +
-                        CampoCsv(fila.Cells[1].Value) + ";" +
-                        CampoCsv(fila.Cells[2].Value) + ";" +
-                        CampoCsv(fila.Cells[3].Value));
-                }
-
-                contenido.AppendLine();
-
-                
-                contenido.AppendLine("TABLA DE SIMBOLOS");
-                contenido.AppendLine(
-                    "Nombre;Primera linea;Primera columna;Tipo de dato;Apariciones");
-
-                foreach (DataGridViewRow fila in dgvSimbolos.Rows)
-                {
-                    if (fila.IsNewRow)
-                        continue;
-
-                    contenido.AppendLine(
-                        CampoCsv(fila.Cells[0].Value) + ";" +
-                        CampoCsv(fila.Cells[1].Value) + ";" +
-                        CampoCsv(fila.Cells[2].Value) + ";" +
-                        CampoCsv(fila.Cells[3].Value) + ";" +
-                        CampoCsv(fila.Cells[4].Value));
-                }
-                contenido.AppendLine();
-
-                contenido.AppendLine("RESUMEN POR CATEGORIA");
-                contenido.AppendLine("Categoria;Cantidad");
-
-                foreach (DataGridViewRow fila in dgvCategorias.Rows)
-                {
-                    if (fila.IsNewRow)
-                        continue;
-
-                    contenido.AppendLine(
-                        CampoCsv(fila.Cells[0].Value) + ";" +
-                        CampoCsv(fila.Cells[1].Value));
-                }
-                contenido.AppendLine();
-
-                
-                contenido.AppendLine("ESTADISTICAS");
-                contenido.AppendLine(CampoCsv(lblTotalTokens.Text));
-                contenido.AppendLine(CampoCsv(lblTotalErrores.Text));
-                contenido.AppendLine(CampoCsv(lblTotalLineas.Text));
-                contenido.AppendLine(CampoCsv(lblEstado.Text));
-
-                File.WriteAllText(
-                    ventanaGuardar.FileName,
-                    contenido.ToString(),
-                    Encoding.UTF8);
+                libroExcel.SaveAs(
+                    ventanaGuardar.FileName
+                );
 
                 MessageBox.Show(
-                    "Los resultados se exportaron correctamente.",
+                    "Los resultados se exportaron " +
+                    "correctamente en tablas de Excel.",
                     "Exportación completada",
                     MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
+                    MessageBoxIcon.Information
+                );
             }
             catch (Exception ex)
             {
                 MessageBox.Show(
-                    "No fue posible exportar los resultados.\n\n" +
-                    ex.Message,
+                    "No fue posible exportar los resultados." +
+                    "\n\n" + ex.Message,
                     "Error de exportación",
                     MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                    MessageBoxIcon.Error
+                );
             }
+        }
+            private void ExportarDataGridView(
+    XLWorkbook libroExcel,
+    DataGridView tablaOrigen,
+    string nombreHoja,
+    string nombreTabla,
+    XLTableTheme tema)
+        {
+            IXLWorksheet hoja =
+                libroExcel.Worksheets.Add(nombreHoja);
+
+            int totalColumnas =
+                tablaOrigen.Columns.Count;
+
+            // Crear encabezados.
+            for (int columna = 0;
+                 columna < totalColumnas;
+                 columna++)
+            {
+                hoja.Cell(1, columna + 1).Value =
+                    tablaOrigen.Columns[columna].HeaderText;
+            }
+
+            int filaExcel = 2;
+
+            // Copiar las filas del DataGridView.
+            foreach (DataGridViewRow filaOrigen
+                     in tablaOrigen.Rows)
+            {
+                if (filaOrigen.IsNewRow)
+                {
+                    continue;
+                }
+
+                for (int columna = 0;
+                     columna < totalColumnas;
+                     columna++)
+                {
+                    string valor =
+                        filaOrigen.Cells[columna].Value?
+                            .ToString() ??
+                        string.Empty;
+
+                    hoja.Cell(
+                        filaExcel,
+                        columna + 1
+                    ).Value = valor;
+                }
+
+                filaExcel++;
+            }
+
+            // Una tabla de Excel necesita un rango.
+            // Cuando no existen registros se conserva una fila vacía.
+            int ultimaFila = Math.Max(
+                2,
+                filaExcel - 1
+            );
+
+            IXLRange rangoTabla = hoja.Range(
+                1,
+                1,
+                ultimaFila,
+                totalColumnas
+            );
+
+            IXLTable tablaExcel =
+                rangoTabla.CreateTable(nombreTabla);
+
+            tablaExcel.Theme = tema;
+            tablaExcel.ShowAutoFilter = true;
+            tablaExcel.ShowRowStripes = true;
+
+            AplicarFormatoHoja(
+                hoja,
+                totalColumnas
+            );
+        }
+        private void ExportarResumen(
+    XLWorkbook libroExcel)
+        {
+            IXLWorksheet hoja =
+                libroExcel.Worksheets.Add("Resumen");
+
+            hoja.Cell("A1").Value = "Indicador";
+            hoja.Cell("B1").Value = "Resultado";
+
+            hoja.Cell("A2").Value = "Tokens";
+            hoja.Cell("B2").Value =
+                ExtraerValorEtiqueta(
+                    lblTotalTokens.Text
+                );
+
+            hoja.Cell("A3").Value = "Errores";
+            hoja.Cell("B3").Value =
+                ExtraerValorEtiqueta(
+                    lblTotalErrores.Text
+                );
+
+            hoja.Cell("A4").Value = "Líneas";
+            hoja.Cell("B4").Value =
+                ExtraerValorEtiqueta(
+                    lblTotalLineas.Text
+                );
+
+            hoja.Cell("A5").Value = "Estado";
+            hoja.Cell("B5").Value =
+                ExtraerValorEtiqueta(
+                    lblEstado.Text
+                );
+
+            hoja.Cell("A6").Value =
+                "Fecha de exportación";
+
+            hoja.Cell("B6").Value =
+                DateTime.Now.ToString(
+                    "dd/MM/yyyy HH:mm:ss"
+                );
+
+            IXLTable tablaResumen =
+                hoja.Range("A1:B6")
+                    .CreateTable("TablaResumen");
+
+            tablaResumen.Theme =
+                XLTableTheme.TableStyleMedium2;
+
+            tablaResumen.ShowAutoFilter = true;
+            tablaResumen.ShowRowStripes = true;
+
+            AplicarFormatoHoja(hoja, 2);
+        }
+        private string ExtraerValorEtiqueta(
+    string texto)
+        {
+            if (string.IsNullOrWhiteSpace(texto))
+            {
+                return string.Empty;
+            }
+
+            int posicionDosPuntos =
+                texto.IndexOf(':');
+
+            if (posicionDosPuntos < 0)
+            {
+                return texto.Trim();
+            }
+
+            return texto
+                .Substring(posicionDosPuntos + 1)
+                .Trim();
+        }
+    
+    private void ExportarDiccionario(
+    XLWorkbook libroExcel)
+        {
+            IXLWorksheet hoja =
+                libroExcel.Worksheets.Add(
+                    "Diccionario"
+                );
+
+            hoja.Cell("A1").Value = "Lexema";
+            hoja.Cell("B1").Value = "Tipo de token";
+            hoja.Cell("C1").Value = "Descripción";
+            hoja.Cell("D1").Value = "Es tipo de dato";
+
+            List<EntradaDiccionario> entradas =
+                DiccionarioLexico.Instancia
+                    .ObtenerEntradas();
+
+            int filaExcel = 2;
+
+            foreach (EntradaDiccionario entrada
+                     in entradas)
+            {
+                hoja.Cell(filaExcel, 1).Value =
+                    entrada.Lexema;
+
+                hoja.Cell(filaExcel, 2).Value =
+                    entrada.Tipo.ToString();
+
+                hoja.Cell(filaExcel, 3).Value =
+                    entrada.Descripcion;
+
+                hoja.Cell(filaExcel, 4).Value =
+                    entrada.EsTipoDato
+                        ? "Sí"
+                        : "No";
+
+                filaExcel++;
+            }
+
+            int ultimaFila = Math.Max(
+                2,
+                filaExcel - 1
+            );
+
+            IXLTable tablaDiccionario =
+                hoja.Range(
+                    1,
+                    1,
+                    ultimaFila,
+                    4
+                ).CreateTable(
+                    "TablaDiccionario"
+                );
+
+            tablaDiccionario.Theme =
+                XLTableTheme.TableStyleMedium9;
+
+            tablaDiccionario.ShowAutoFilter = true;
+            tablaDiccionario.ShowRowStripes = true;
+
+            AplicarFormatoHoja(hoja, 4);
+        }
+        private void AplicarFormatoHoja(
+    IXLWorksheet hoja,
+    int totalColumnas)
+        {
+            hoja.SheetView.FreezeRows(1);
+
+            hoja.Row(1).Height = 24;
+
+            hoja.Row(1).Style.Font.Bold = true;
+            hoja.Row(1).Style.Alignment.Horizontal =
+                XLAlignmentHorizontalValues.Center;
+
+            hoja.Row(1).Style.Alignment.Vertical =
+                XLAlignmentVerticalValues.Center;
+
+            hoja.Columns(
+                1,
+                totalColumnas
+            ).AdjustToContents();
+
+            for (int columna = 1;
+                 columna <= totalColumnas;
+                 columna++)
+            {
+                if (hoja.Column(columna).Width > 45)
+                {
+                    hoja.Column(columna).Width = 45;
+                }
+
+                if (hoja.Column(columna).Width < 12)
+                {
+                    hoja.Column(columna).Width = 12;
+                }
+            }
+
+            hoja.CellsUsed().Style.Alignment
+                .Vertical =
+                XLAlignmentVerticalValues.Center;
+
+            hoja.CellsUsed().Style.Alignment
+                .WrapText = true;
         }
     }
 }

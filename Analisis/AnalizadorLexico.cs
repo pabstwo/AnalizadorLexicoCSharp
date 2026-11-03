@@ -7,6 +7,7 @@ namespace AnalizadorLexicoCSharp.Analisis
     public class AnalizadorLexico
     {
         private readonly TablaSimbolos tablaSimbolos;
+        private readonly DiccionarioLexico diccionarioLexico;
 
         private string codigoFuente;
         private int posicion;
@@ -17,27 +18,17 @@ namespace AnalizadorLexicoCSharp.Analisis
 
         private ResultadoAnalisis resultado;
 
-        private readonly HashSet<string> palabrasReservadas =
-            new HashSet<string>
-            {
-                "if", "else", "while", "for", "do",
-                "switch", "case", "default",
-                "break", "continue", "return",
-                "int", "float", "double", "char",
-                "bool", "string", "void",
-                "true", "false",
-                "class", "static",
-                "public", "private", "protected",
-                "new", "using", "namespace"
-            };
+        
        
         public AnalizadorLexico()
         {
             tablaSimbolos = new TablaSimbolos();
+            diccionarioLexico = DiccionarioLexico.Instancia;
+
             codigoFuente = string.Empty;
             resultado = new ResultadoAnalisis();
         }
-
+        
         public ResultadoAnalisis Analizar(string codigo)
         {
             PrepararAnalisis(codigo);
@@ -144,12 +135,7 @@ namespace AnalizadorLexicoCSharp.Analisis
         }
         private bool EsTipoDato(string texto)
         {
-            return texto == "int" ||
-                   texto == "float" ||
-                   texto == "double" ||
-                   texto == "char" ||
-                   texto == "bool" ||
-                   texto == "string";
+            return diccionarioLexico.EsTipoDato(texto);
         }
         private void ReconocerIdentificadorOPalabraReservada()
         {
@@ -169,7 +155,7 @@ namespace AnalizadorLexicoCSharp.Analisis
             string texto = lexema.ToString();
             TipoToken tipo;
 
-            if (palabrasReservadas.Contains(texto))
+            if (diccionarioLexico.EsPalabraReservada(texto))
             {
                 tipo = TipoToken.PalabraReservada;
             }
@@ -178,7 +164,7 @@ namespace AnalizadorLexicoCSharp.Analisis
                 tipo = TipoToken.Identificador;
             }
 
-          
+
             if (tipo == TipoToken.PalabraReservada &&
                 EsTipoDato(texto))
             {
